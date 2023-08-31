@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class venda extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['valor_total'];
+
+    public function colaborador(){
+        return $this->hasOne(Colaborador::class);     
+    }
+
+    public function cliente(){
+        return $this->hasOne(Cliente::class);     
+    }
+
+    public function produto(){
+        return $this->belongsToMany(Produto::class);     
+    }
 }
