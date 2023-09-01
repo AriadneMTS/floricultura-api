@@ -11,7 +11,8 @@ class ColaboradorController extends Controller
      */
     public function index()
     {
-        //
+       // $dados = Colaborador::with('funcao')->get();
+       // return Response()->json($dados);
     }
 
     /**
