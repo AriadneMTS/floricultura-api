@@ -13,7 +13,6 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        //
         $dados = Cliente::get();
 
         return Response()->json($dados);
@@ -32,7 +31,6 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $dados = $request->except('_token');
 
         $cliente = Cliente::create($dados);
@@ -45,7 +43,13 @@ class ClienteController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $cliente = Cliente::find($id);
+
+        if(!$cliente) {
+            return Response()->json([], 404);
+        }
+
+        return Response()->json($cliente);
     }
 
     /**
@@ -61,7 +65,13 @@ class ClienteController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $dados = $request->except('_token');
+
+        $cliente = Cliente::find($id);
+
+        $cliente->update($dados);
+
+        return Response()->json([], 204);
     }
 
     /**
@@ -69,6 +79,8 @@ class ClienteController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Cliente::destroy($id);
+
+        return Response()->json([], 204);
     }
 }
