@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ColaboradorController;
+use App\Http\Controllers\FornecedorController;
+use App\Http\Controllers\FuncaoController;
+use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\VendaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +23,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::resource('/fornecedores', FornecedorController::class);
+Route::resource('/clientes', ClienteController::class);
+Route::resource('/funcoes', FuncaoController::class);
+Route::resource('/permissoes', PermissaoController::class);
+Route::resource('/produtos', ProdutoController::class);
+Route::resource('/colaboradores', ColaboradorController::class);
+Route::resource('/vendas', VendaController::class);
