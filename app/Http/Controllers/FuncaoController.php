@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Funcao;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
+use PhpParser\Node\Expr\FuncCall;
 
 class FuncaoController extends Controller
 {
@@ -11,7 +14,9 @@ class FuncaoController extends Controller
      */
     public function index()
     {
-        //
+        $dados = Funcao::get();
+
+        return Response()->json($dados);
     }
 
     /**
@@ -27,7 +32,11 @@ class FuncaoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $dados = $request->except('_token');
+
+        $funcao = Funcao::create($dados);
+
+        return Response()->json($funcao, 201);
     }
 
     /**
@@ -35,7 +44,13 @@ class FuncaoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $funcao = Funcao::find($id);
+
+        if(!$funcao) {
+            return Response()->json([], 404);
+        }
+
+        return Response()->json($funcao);
     }
 
     /**
@@ -51,7 +66,13 @@ class FuncaoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $dados = $request->except('_token');
+
+        $funcao = Funcao::find($id);
+
+        $funcao->update($dados);
+
+        return Response()->json([], 204);
     }
 
     /**
@@ -59,6 +80,8 @@ class FuncaoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Funcao::destroy($id);
+
+        return Response()->json([], 204);
     }
 }

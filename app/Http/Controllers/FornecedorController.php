@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fornecedor;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
 class FornecedorController extends Controller
@@ -11,7 +13,9 @@ class FornecedorController extends Controller
      */
     public function index()
     {
-        //
+        $dados = Fornecedor::get();
+
+        return Response()->json($dados);
     }
 
     /**
@@ -27,7 +31,11 @@ class FornecedorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $dados = $request->except('_token');
+
+        $fornecedor = Fornecedor::create($dados);
+
+        return Response()->json($fornecedor, 201);
     }
 
     /**
@@ -35,7 +43,13 @@ class FornecedorController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $fornecedor = Fornecedor::find($id);
+
+        if(!$fornecedor) {
+            return Response()->json([], 404);
+        }
+
+        return Response()->json($fornecedor);
     }
 
     /**
@@ -51,7 +65,13 @@ class FornecedorController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $dados = $request->except('_token');
+
+        $fornecedor = Fornecedor::find($id);
+
+        $fornecedor->update($dados);
+
+        return Response()->json([], 204);
     }
 
     /**
@@ -59,6 +79,8 @@ class FornecedorController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Fornecedor::destroy($id);
+
+        return Response()->json([], 204);
     }
 }

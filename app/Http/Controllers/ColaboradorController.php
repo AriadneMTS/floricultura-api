@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Colaborador;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
 class ColaboradorController extends Controller
@@ -11,8 +12,9 @@ class ColaboradorController extends Controller
      */
     public function index()
     {
-       // $dados = Colaborador::with('funcao')->get();
-       // return Response()->json($dados);
+        $dados = Colaborador::get();
+
+        return Response()->json($dados);
     }
 
     /**
@@ -28,7 +30,11 @@ class ColaboradorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $dados = $request->except('_token');
+
+        $colaborador = Colaborador::create($dados);
+
+        return Response()->json($colaborador, 201);
     }
 
     /**
@@ -36,7 +42,13 @@ class ColaboradorController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $colaborador = Colaborador::find($id);
+
+        if(!$colaborador) {
+            return Response()->json([], 404);
+        }
+
+        return Response()->json($colaborador);
     }
 
     /**
@@ -52,7 +64,13 @@ class ColaboradorController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $dados = $request->except('_token');
+
+        $colaborador = Colaborador::find($id);
+
+        $colaborador->update($dados);
+
+        return Response()->json([], 204);
     }
 
     /**
@@ -60,6 +78,10 @@ class ColaboradorController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        {
+            Colaborador::destroy($id);
+    
+            return Response()->json([], 204);
+        }
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permissao;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
 class PermissaoController extends Controller
@@ -11,7 +13,9 @@ class PermissaoController extends Controller
      */
     public function index()
     {
-        //
+        $dados = Permissao::get();
+
+        return Response()->json($dados);
     }
 
     /**
@@ -27,7 +31,11 @@ class PermissaoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $dados = $request->except('_token');
+
+        $permisao = Permissao::create($dados);
+
+        return Response()->json($permisao, 201);
     }
 
     /**
@@ -35,7 +43,13 @@ class PermissaoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $permisao = Permissao::find($id);
+
+        if(!$permisao) {
+            return Response()->json([], 404);
+        }
+
+        return Response()->json($permisao);
     }
 
     /**
@@ -51,7 +65,14 @@ class PermissaoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $dados = $request->except('_token');
+
+        $permissao = Permissao::find($id);
+
+        $permissao->updade($dados);
+
+        return Response()->json([], 204);
+    
     }
 
     /**
@@ -59,6 +80,8 @@ class PermissaoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Permissao::destroy($id);
+
+        return Response()->json([], 204);
     }
 }

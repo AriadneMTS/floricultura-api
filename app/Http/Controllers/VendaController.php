@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Venda;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
 class VendaController extends Controller
@@ -11,7 +13,9 @@ class VendaController extends Controller
      */
     public function index()
     {
-        //
+        $dados = Venda::get();
+
+        return Response()->json($dados);
     }
 
     /**
@@ -27,7 +31,11 @@ class VendaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $dados = $request->except('_token');
+
+        $venda = Venda::create($dados);
+
+        return Response()->json($venda, 201);
     }
 
     /**
@@ -43,7 +51,13 @@ class VendaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $venda = Venda::find($id);
+
+        if(!$venda) {
+            return Response()->json([], 404);
+        }
+
+        return Response()->json($venda);
     }
 
     /**
@@ -51,7 +65,13 @@ class VendaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $dados = $request->except('_token');
+
+        $venda = Venda::find($id);
+
+        $venda->update($dados);
+
+        return Response()->json([], 204);
     }
 
     /**
@@ -59,6 +79,8 @@ class VendaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Venda::destroy($id);
+
+        return Response()->json([], 204);
     }
 }
