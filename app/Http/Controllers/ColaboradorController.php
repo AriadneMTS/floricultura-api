@@ -12,9 +12,9 @@ class ColaboradorController extends Controller
      */
     public function index()
     {
-        $dados = Colaborador::get();
+        $colaborador = Colaborador::with('funcao')->get();
 
-        return Response()->json($dados);
+        return Response()->json($colaborador);
     }
 
     /**

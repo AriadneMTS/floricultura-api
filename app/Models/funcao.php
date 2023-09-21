@@ -15,5 +15,7 @@ class Funcao extends Model
         return $this->hasOne(Permissao::class);
     }
 
-
+    public function colaboradores() {
+        return $this->hasMany(Colaborador:: class);
+    }
 }

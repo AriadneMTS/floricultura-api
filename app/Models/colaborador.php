@@ -9,9 +9,9 @@ class Colaborador extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nome', 'cpf', 'telefone'];
+    protected $fillable = ['nome', 'cpf', 'telefone', 'funcao_id'];
 
     public function funcao() {
-        return $this->hasOne(Funcao::class);
+        return $this->belongsTo(Funcao::class);
     }
 }

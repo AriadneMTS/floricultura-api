@@ -6,6 +6,7 @@ use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\FuncaoController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\VendaController;
+use App\Models\Colaborador;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,8 +28,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('/fornecedores', FornecedorController::class);
 Route::resource('/clientes', ClienteController::class);
+Route::resource('/alunos', AlunoController::class);
 Route::resource('/funcoes', FuncaoController::class);
 Route::resource('/permissoes', PermissaoController::class);
 Route::resource('/produtos', ProdutoController::class);
 Route::resource('/colaboradores', ColaboradorController::class);
+Route::get('/colaborador/funcao/{id}', [ColaboradorController::class, 'getFuncaoById']);
 Route::resource('/vendas', VendaController::class);
