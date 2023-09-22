@@ -31,6 +31,7 @@ class ColaboradorController extends Controller
     public function store(Request $request)
     {
         $dados = $request->except('_token');
+        $dados["password"] = bcrypt($request->password);
 
         $colaborador = Colaborador::create($dados);
 
@@ -80,7 +81,7 @@ class ColaboradorController extends Controller
     {
         {
             Colaborador::destroy($id);
-    
+
             return Response()->json([], 204);
         }
     }
