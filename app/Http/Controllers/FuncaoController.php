@@ -9,29 +9,27 @@ use PhpParser\Node\Expr\FuncCall;
 
 class FuncaoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
+        if (!auth()->user()->tokenCan('funcao-index')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $dados = Funcao::get();
 
         return Response()->json($dados);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        if (!auth()->user()->tokenCan('funcao-store')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $dados = $request->except('_token');
 
         $funcao = Funcao::create($dados);
@@ -39,11 +37,14 @@ class FuncaoController extends Controller
         return Response()->json($funcao, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
+        if (!auth()->user()->tokenCan('funcao-show')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $funcao = Funcao::find($id);
 
         if(!$funcao) {
@@ -53,19 +54,14 @@ class FuncaoController extends Controller
         return Response()->json($funcao);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
+        if (!auth()->user()->tokenCan('funcao-update')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $dados = $request->except('_token');
 
         $funcao = Funcao::find($id);
@@ -75,11 +71,14 @@ class FuncaoController extends Controller
         return Response()->json([], 204);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
+        if (!auth()->user()->tokenCan('funcao-destroy')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         Funcao::destroy($id);
 
         return Response()->json([], 204);

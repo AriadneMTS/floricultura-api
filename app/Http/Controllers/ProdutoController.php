@@ -7,29 +7,27 @@ use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
+        if (!auth()->user()->tokenCan('produto-index')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $dados = Produto::get();
 
         return Response()->json($dados);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-     //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        if (!auth()->user()->tokenCan('produto-store')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $dados = $request->except('_token');
 
         $produto = Produto::create($dados);
@@ -37,11 +35,14 @@ class ProdutoController extends Controller
         return Response()->json($produto, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
+        if (!auth()->user()->tokenCan('produto-show')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $produto = Produto::find($id);
 
         if(!$produto) {
@@ -51,19 +52,14 @@ class ProdutoController extends Controller
         return Response()->json($produto);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
+        if (!auth()->user()->tokenCan('produto-update')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $dados = $request->except('_token');
 
         $produto = Produto::find($id);
@@ -73,11 +69,14 @@ class ProdutoController extends Controller
         return Response()->json([], 204);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
+        if (!auth()->user()->tokenCan('produto-destroy')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         Produto::destroy($id);
 
         return Response()->json([], 204);

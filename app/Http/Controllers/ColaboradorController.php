@@ -1,35 +1,34 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Colaborador;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
 class ColaboradorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
+        if (!auth()->user()->tokenCan('colaborador-index')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $colaborador = Colaborador::with('funcao')->get();
 
         return Response()->json($colaborador);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        if (!auth()->user()->tokenCan('colaborador-store')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $dados = $request->except('_token');
         $dados["password"] = bcrypt($request->password);
 
@@ -38,33 +37,31 @@ class ColaboradorController extends Controller
         return Response()->json($colaborador, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
+        if (!auth()->user()->tokenCan('colaborador-show')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $colaborador = Colaborador::find($id);
 
-        if(!$colaborador) {
+        if (!$colaborador) {
             return Response()->json([], 404);
         }
 
         return Response()->json($colaborador);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
+        if (!auth()->user()->tokenCan('colaborador-update')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $dados = $request->except('_token');
 
         $colaborador = Colaborador::find($id);
@@ -74,15 +71,16 @@ class ColaboradorController extends Controller
         return Response()->json([], 204);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        {
-            Colaborador::destroy($id);
-
-            return Response()->json([], 204);
+        if (!auth()->user()->tokenCan('colaborador-destroy')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
         }
+
+        Colaborador::destroy($id);
+
+        return Response()->json([], 204);
     }
 }

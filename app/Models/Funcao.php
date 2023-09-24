@@ -11,8 +11,8 @@ class Funcao extends Model
 
     protected $fillable = ['nome'];
 
-    public function Permissao() {
-        return $this->hasOne(Permissao::class);
+    public function permissoes() {
+        return $this->belongsToMany(Permissao::class, 'funcao_permissaos');
     }
 
     public function colaboradores() {

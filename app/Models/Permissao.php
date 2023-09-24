@@ -11,4 +11,8 @@ class Permissao extends Model
 
     protected $fillable = ['nome'];
 
+    public function funcoes() {
+        return $this->belongsToMany(Funcao::class, 'funcao_permissaos');
+    }
+
 }

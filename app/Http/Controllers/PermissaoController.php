@@ -8,29 +8,27 @@ use Illuminate\Http\Request;
 
 class PermissaoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
+        if (!auth()->user()->tokenCan('permissao-index')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $dados = Permissao::get();
 
         return Response()->json($dados);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        if (!auth()->user()->tokenCan('permissao-store')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $dados = $request->except('_token');
 
         $permisao = Permissao::create($dados);
@@ -38,11 +36,14 @@ class PermissaoController extends Controller
         return Response()->json($permisao, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
+        if (!auth()->user()->tokenCan('permissao-show')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $permisao = Permissao::find($id);
 
         if(!$permisao) {
@@ -52,19 +53,14 @@ class PermissaoController extends Controller
         return Response()->json($permisao);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
+        if (!auth()->user()->tokenCan('permissao-update')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         $dados = $request->except('_token');
 
         $permissao = Permissao::find($id);
@@ -72,14 +68,17 @@ class PermissaoController extends Controller
         $permissao->updade($dados);
 
         return Response()->json([], 204);
-    
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
+        if (!auth()->user()->tokenCan('permissao-destroy')) {
+            return Response()->json([
+                "message" => "Sem permissão"
+            ], 403);
+        }
+
         Permissao::destroy($id);
 
         return Response()->json([], 204);
