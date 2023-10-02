@@ -87,7 +87,7 @@ class PermissaoSeeder extends Seeder
         DB::table('permissaos')->insert([
             [
                 'descricao' => 'Listar fornecedores',
-                'nome' => 'colaborador-index',
+                'nome' => 'fornecedor-index',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
@@ -121,31 +121,31 @@ class PermissaoSeeder extends Seeder
         DB::table('permissaos')->insert([
             [
                 'descricao' => 'Listar funções',
-                'nome' => '-index',
+                'nome' => 'funcao-index',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
                 'descricao' => 'Cadastrar função',
-                'nome' => '-store',
+                'nome' => 'funcao-store',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
                 'descricao' => 'Visualizar função',
-                'nome' => '-show',
+                'nome' => 'funcao-show',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
                 'descricao' => 'Editar função',
-                'nome' => '-update',
+                'nome' => 'funcao-update',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
             [
                 'descricao' => 'Excluir função',
-                'nome' => '-destroy',
+                'nome' => 'funcao-destroy',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],

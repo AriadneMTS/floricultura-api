@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('/colaboradores', ColaboradorController::class);
     Route::get('/colaborador/funcao/{id}', [ColaboradorController::class, 'getFuncaoById']);
     Route::resource('/vendas', VendaController::class);
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);

@@ -21,11 +21,20 @@ class AuthController extends Controller
                     'token',
                     $permissoes
                 )->plainTextToken,
+                "user" => $request->user(),
             ]);
         }
 
         return Response()->json([
             "message" => "Não autorizado"
         ], 403);
+    }
+
+    public function logout(Request $request) {
+        $request->user()->currentAccessToken()->delete();
+
+        return Response()->json([
+            "message" => "Token Deletado",
+        ], 200);
     }
 }
