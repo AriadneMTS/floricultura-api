@@ -33,6 +33,7 @@ class FuncaoController extends Controller
         $dados = $request->except('_token');
 
         $funcao = Funcao::create($dados);
+        $funcao->permissoes()->sync($dados["permissoes"]);
 
         return Response()->json($funcao, 201);
     }
@@ -67,6 +68,7 @@ class FuncaoController extends Controller
         $funcao = Funcao::find($id);
 
         $funcao->update($dados);
+        $funcao->permissoes()->sync($dados["permissoes"]);
 
         return Response()->json([], 204);
     }
