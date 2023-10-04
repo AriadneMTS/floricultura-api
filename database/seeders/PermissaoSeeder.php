@@ -218,5 +218,39 @@ class PermissaoSeeder extends Seeder
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
         ]);
+
+        // Ações relacionadas a Model Permissao
+        DB::table('permissaos')->insert([
+            [
+                'descricao' => 'Listar permissões',
+                'nome' => 'permissao-index',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+            [
+                'descricao' => 'Cadastrar permissão',
+                'nome' => 'permissao-store',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+            [
+                'descricao' => 'Visualizar permissão',
+                'nome' => 'permissao-show',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+            [
+                'descricao' => 'Editar permissão',
+                'nome' => 'permissao-update',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+            [
+                'descricao' => 'Excluir permissão',
+                'nome' => 'permissao-destroy',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+        ]);
     }
 }

@@ -45,7 +45,7 @@ class FuncaoController extends Controller
             ], 403);
         }
 
-        $funcao = Funcao::find($id);
+        $funcao = Funcao::with('permissoes')->find($id);
 
         if(!$funcao) {
             return Response()->json([], 404);
