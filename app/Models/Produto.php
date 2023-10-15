@@ -10,7 +10,7 @@ class Produto extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nome','valor','estoque','imagem_url'];
+    protected $fillable = ['nome','valor','estoque','imagem_url', 'fornecedor_id'];
 
     public function fornecedor(){
         return $this->belongsTo(Fornecedor::class);
