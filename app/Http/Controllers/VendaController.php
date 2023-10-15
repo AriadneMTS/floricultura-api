@@ -12,7 +12,7 @@ class VendaController extends Controller
     {
         if (!auth()->user()->tokenCan('venda-index')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para listar vendas."
             ], 403);
         }
 
@@ -25,7 +25,7 @@ class VendaController extends Controller
     {
         if (!auth()->user()->tokenCan('venda-store')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para cadastrar venda."
             ], 403);
         }
 
@@ -40,7 +40,7 @@ class VendaController extends Controller
     {
         if (!auth()->user()->tokenCan('venda-show')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para visualizar venda."
             ], 403);
         }
 
@@ -57,7 +57,7 @@ class VendaController extends Controller
     {
         if (!auth()->user()->tokenCan('venda-update')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para editar venda."
             ], 403);
         }
 
@@ -74,7 +74,7 @@ class VendaController extends Controller
     {
         if (!auth()->user()->tokenCan('venda-destroy')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para excluir venda."
             ], 403);
         }
 

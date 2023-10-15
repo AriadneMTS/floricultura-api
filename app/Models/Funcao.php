@@ -18,4 +18,10 @@ class Funcao extends Model
     public function colaboradores() {
         return $this->hasMany(Colaborador:: class);
     }
+
+    protected static function booted () {
+        static::deleting(function(Funcao $funcao) {
+             $funcao->permissoes()->detach();
+        });
+    }
 }

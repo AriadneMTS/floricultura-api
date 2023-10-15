@@ -12,7 +12,7 @@ class PermissaoController extends Controller
     {
         if (!auth()->user()->tokenCan('permissao-index')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para listar permissões."
             ], 403);
         }
 
@@ -25,7 +25,7 @@ class PermissaoController extends Controller
     {
         if (!auth()->user()->tokenCan('permissao-store')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para cadastrar permissão."
             ], 403);
         }
 
@@ -40,7 +40,7 @@ class PermissaoController extends Controller
     {
         if (!auth()->user()->tokenCan('permissao-show')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para visualizar permissão."
             ], 403);
         }
 
@@ -57,7 +57,7 @@ class PermissaoController extends Controller
     {
         if (!auth()->user()->tokenCan('permissao-update')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para editar permissão."
             ], 403);
         }
 
@@ -75,7 +75,7 @@ class PermissaoController extends Controller
     {
         if (!auth()->user()->tokenCan('permissao-destroy')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para excluir permissão."
             ], 403);
         }
 

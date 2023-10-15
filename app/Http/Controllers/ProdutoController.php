@@ -11,7 +11,7 @@ class ProdutoController extends Controller
     {
         if (!auth()->user()->tokenCan('produto-index')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para listar produtos."
             ], 403);
         }
 
@@ -24,7 +24,7 @@ class ProdutoController extends Controller
     {
         if (!auth()->user()->tokenCan('produto-store')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para cadastrar produto."
             ], 403);
         }
 
@@ -39,7 +39,7 @@ class ProdutoController extends Controller
     {
         if (!auth()->user()->tokenCan('produto-show')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para visualizar produto."
             ], 403);
         }
 
@@ -56,7 +56,7 @@ class ProdutoController extends Controller
     {
         if (!auth()->user()->tokenCan('produto-update')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para editar produto."
             ], 403);
         }
 
@@ -73,7 +73,7 @@ class ProdutoController extends Controller
     {
         if (!auth()->user()->tokenCan('produto-destroy')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para excluir produto."
             ], 403);
         }
 

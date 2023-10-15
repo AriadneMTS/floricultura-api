@@ -12,7 +12,7 @@ class FornecedorController extends Controller
     {
         if (!auth()->user()->tokenCan('fornecedor-index')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para listar fornecedores."
             ], 403);
         }
 
@@ -25,7 +25,7 @@ class FornecedorController extends Controller
     {
         if (!auth()->user()->tokenCan('fornecedor-store')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para cadastrar fornecedor."
             ], 403);
         }
 
@@ -40,7 +40,7 @@ class FornecedorController extends Controller
     {
         if (!auth()->user()->tokenCan('fornecedor-show')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para visualizar fornecedor."
             ], 403);
         }
 
@@ -57,7 +57,7 @@ class FornecedorController extends Controller
     {
         if (!auth()->user()->tokenCan('fornecedor-update')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para editar fornecedor."
             ], 403);
         }
 
@@ -74,7 +74,7 @@ class FornecedorController extends Controller
     {
         if (!auth()->user()->tokenCan('fornecedor-destroy')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para excluir fornecedor."
             ], 403);
         }
 

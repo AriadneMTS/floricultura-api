@@ -12,7 +12,7 @@ class ClienteController extends Controller
     {
         if (!auth()->user()->tokenCan('cliente-index')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para listar clientes."
             ], 403);
         }
 
@@ -25,7 +25,7 @@ class ClienteController extends Controller
     {
         if (!auth()->user()->tokenCan('cliente-store')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para cadastrar cliente."
             ], 403);
         }
 
@@ -40,7 +40,7 @@ class ClienteController extends Controller
     {
         if (!auth()->user()->tokenCan('cliente-show')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para visualizar cliente."
             ], 403);
         }
 
@@ -57,7 +57,7 @@ class ClienteController extends Controller
     {
         if (!auth()->user()->tokenCan('cliente-update')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para editar cliente."
             ], 403);
         }
 
@@ -74,7 +74,7 @@ class ClienteController extends Controller
     {
         if (!auth()->user()->tokenCan('cliente-destroy')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para excluir cliente."
             ], 403);
         }
 

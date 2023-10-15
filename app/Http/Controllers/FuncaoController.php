@@ -13,7 +13,7 @@ class FuncaoController extends Controller
     {
         if (!auth()->user()->tokenCan('funcao-index')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para listar funções."
             ], 403);
         }
 
@@ -26,7 +26,7 @@ class FuncaoController extends Controller
     {
         if (!auth()->user()->tokenCan('funcao-store')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para cadastrar função."
             ], 403);
         }
 
@@ -42,7 +42,7 @@ class FuncaoController extends Controller
     {
         if (!auth()->user()->tokenCan('funcao-show')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para visualizar função."
             ], 403);
         }
 
@@ -59,7 +59,7 @@ class FuncaoController extends Controller
     {
         if (!auth()->user()->tokenCan('funcao-update')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para editar função."
             ], 403);
         }
 
@@ -77,8 +77,16 @@ class FuncaoController extends Controller
     {
         if (!auth()->user()->tokenCan('funcao-destroy')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para excluir função."
             ], 403);
+        }
+
+        $funcao = Funcao::find($id);
+
+        if ($funcao->colaboradores->all()) {
+            return Response()->json([
+                "message" => "Não foi possível deletar pois existem um ou mais colaboradores cadastrados com essa função."
+            ], 409);
         }
 
         Funcao::destroy($id);

@@ -12,7 +12,7 @@ class ColaboradorController extends Controller
     {
         if (!auth()->user()->tokenCan('colaborador-index')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para listar colaboradores."
             ], 403);
         }
 
@@ -25,7 +25,7 @@ class ColaboradorController extends Controller
     {
         if (!auth()->user()->tokenCan('colaborador-store')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para cadastrar colaborador."
             ], 403);
         }
 
@@ -41,7 +41,7 @@ class ColaboradorController extends Controller
     {
         if (!auth()->user()->tokenCan('colaborador-show')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para visualizar colaborador."
             ], 403);
         }
 
@@ -58,11 +58,14 @@ class ColaboradorController extends Controller
     {
         if (!auth()->user()->tokenCan('colaborador-update')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para editar colaborador."
             ], 403);
         }
 
         $dados = $request->except('_token');
+        if (array_key_exists("password", $dados)) {
+            $dados["password"] = bcrypt($request->password);
+        }
 
         $colaborador = Colaborador::find($id);
 
@@ -75,7 +78,13 @@ class ColaboradorController extends Controller
     {
         if (!auth()->user()->tokenCan('colaborador-destroy')) {
             return Response()->json([
-                "message" => "Sem permissão"
+                "message" => "Colaborador sem permissão para excluir colaborador."
+            ], 403);
+        }
+
+        if ($id == 1) {
+            return Response()->json([
+                "message" => "Não é possível deletar o usuário administrador."
             ], 403);
         }
 
