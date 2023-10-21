@@ -78,6 +78,14 @@ class FornecedorController extends Controller
             ], 403);
         }
 
+        $fornecedor = Fornecedor::find($id);
+
+        if ($fornecedor->produtos->all()) {
+            return Response()->json([
+                "message" => "Não foi possível deletar pois existem um ou mais produtos cadastrados com esse fornecedor."
+            ], 409);
+        }
+
         Fornecedor::destroy($id);
 
         return Response()->json([], 204);

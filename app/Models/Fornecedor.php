@@ -11,7 +11,7 @@ class Fornecedor extends Model
 
     protected $fillable = ['nome', 'cnpj'];
 
-    public function produto() {
+    public function produtos() {
         return $this->hasMany(Produto::class);
     }
 }
