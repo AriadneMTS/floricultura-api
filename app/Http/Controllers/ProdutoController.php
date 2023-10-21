@@ -106,7 +106,14 @@ class ProdutoController extends Controller
             ], 403);
         }
 
-        Produto::destroy($id);
+        $produto = Produto::find($id);
+
+        if($produto->imagem_url !== "produto-default.png") {
+            $image_path = public_path('images/produtos').'/'.$produto->imagem_url;
+            unlink($image_path);
+        }
+
+        $produto->delete();
 
         return Response()->json([], 204);
     }
