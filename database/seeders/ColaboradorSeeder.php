@@ -23,7 +23,7 @@ class ColaboradorSeeder extends Seeder
             'telefone' => '12364892789',
             'funcao_id' => 1,
             'email' => 'admin@admin.com',
-            'password' => bcrypt('admin@123'),
+            'password' => bcrypt(env("ADMIN_PASSWORD")),
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
