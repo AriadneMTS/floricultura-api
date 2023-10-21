@@ -79,6 +79,8 @@ class ProdutoController extends Controller
 
         $dados = $request->except('_token');
 
+        $produto = Produto::find($id);
+
         if ($request->hasFile('imagem') && $request->file('imagem')->isValid()) {
             $requestImage = $request->imagem;
 
@@ -89,9 +91,13 @@ class ProdutoController extends Controller
             $requestImage->move(public_path('images/produtos'), $imageName);
 
             $dados["imagem_url"] = $imageName;
-        }
 
-        $produto = Produto::find($id);
+            // Deleta imagem atual caso ja tenha cadastrada
+            if($produto->imagem_url !== "produto-default.png") {
+                $image_path = public_path('images/produtos').'/'.$produto->imagem_url;
+                unlink($image_path);
+            }
+        }
 
         $produto->update($dados);
 
