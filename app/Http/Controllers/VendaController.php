@@ -31,7 +31,22 @@ class VendaController extends Controller
 
         $dados = $request->except('_token');
 
+        $dados["colaborador_id"] = auth()->user()->id;
+
         $venda = Venda::create($dados);
+        // dd(array_map(function ($produto) {
+        //     return [
+        //         $produto["id"] => array('quantidade' => $produto["quantidade"])
+        //     ];
+        // }, $dados["produtos"]));
+
+        $venda->produtos()->sync([2 => ["quantidade" => 3]]);
+
+        // $venda->produtos()->sync(array_map(function ($produto) {
+        //     return [
+        //         $produto["id"] => array('quantidade' => $produto["quantidade"])
+        //     ];
+        // }, $dados["produtos"]));
 
         return Response()->json($venda, 201);
     }

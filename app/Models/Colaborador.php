@@ -18,4 +18,8 @@ class Colaborador extends Authenticable
     public function funcao() {
         return $this->belongsTo(Funcao::class);
     }
+
+    public function vendas() {
+        return $this->hasMany(Venda::class);
+    }
 }
