@@ -16,7 +16,7 @@ class VendaController extends Controller
             ], 403);
         }
 
-        $dados = Venda::get();
+        $dados = Venda::with('produtos', 'cliente:id,nome,cpf')->get();
 
         return Response()->json($dados);
     }
@@ -52,7 +52,7 @@ class VendaController extends Controller
             ], 403);
         }
 
-        $venda = Venda::find($id);
+        $venda = Venda::with('produtos', 'cliente')->find($id);
 
         if(!$venda) {
             return Response()->json([], 404);
