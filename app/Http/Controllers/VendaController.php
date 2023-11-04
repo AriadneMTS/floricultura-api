@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PaymentMethods;
 use App\Models\Venda;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
@@ -16,9 +17,14 @@ class VendaController extends Controller
             ], 403);
         }
 
-        $dados = Venda::with('produtos', 'cliente:id,nome,cpf')->get();
+        $dados = Venda::with('produtos', 'cliente:id,nome,cpf')->get()->toArray();
 
-        return Response()->json($dados);
+        $formatedData = array_map(function($venda) {
+            $venda["metodo_pagamento"] = PaymentMethods::fromValue($venda["metodo_pagamento"]);
+            return $venda;
+        }, $dados);
+
+        return Response()->json($formatedData);
     }
 
     public function store(Request $request)
@@ -74,6 +80,12 @@ class VendaController extends Controller
         $venda = Venda::find($id);
 
         $venda->update($dados);
+        $produtos = array_reduce($dados["produtos"], function ($carry, $produto) {
+            $carry[$produto["id"]] = ["quantidade" => $produto["quantidade"]];
+            return $carry;
+        }, []);
+
+        $venda->produtos()->sync($produtos);
 
         return Response()->json([], 204);
     }

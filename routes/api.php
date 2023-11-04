@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\PaymentMethods;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ColaboradorController;
@@ -36,6 +37,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/colaborador/funcao/{id}', [ColaboradorController::class, 'getFuncaoById']);
     Route::resource('/vendas', VendaController::class);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/metodos_pagamento', function () {
+        return PaymentMethods::getPaymentMethods();
+    });
 });
 
 Route::post('/login', [AuthController::class, 'login']);
