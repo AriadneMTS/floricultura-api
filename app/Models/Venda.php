@@ -9,7 +9,7 @@ class Venda extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['cliente_id', 'colaborador_id', 'valor_total', 'metodo_pagamento'];
+    protected $fillable = ['cliente_id', 'colaborador_id', 'valor_total', 'metodo_pagamento', 'desconto'];
 
     public function colaborador() {
         return $this->belongsTo(Colaborador::class);
