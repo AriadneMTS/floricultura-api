@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,6 +11,11 @@ class Venda extends Model
     use HasFactory;
 
     protected $fillable = ['cliente_id', 'colaborador_id', 'valor_total', 'metodo_pagamento', 'desconto'];
+    protected $appends = [
+        'formatted_created_at',
+        'formatted_valor_total',
+        'formatted_desconto',
+    ];
 
     public function colaborador() {
         return $this->belongsTo(Colaborador::class);
@@ -27,5 +33,23 @@ class Venda extends Model
         static::deleting(function(Venda $venda) {
              $venda->produtos()->detach();
         });
+    }
+
+    protected function formattedCreatedAt(): Attribute {
+        return Attribute::make(
+            get: fn () => formatCreatedAt($this->created_at),
+        );
+    }
+
+    protected function formattedValorTotal(): Attribute {
+        return Attribute::make(
+            get: fn () => formatNumberToBRL($this->valor_total),
+        );
+    }
+
+    protected function formattedDesconto(): Attribute {
+        return Attribute::make(
+            get: fn () => formatNumberToBRL($this->desconto),
+        );
     }
 }

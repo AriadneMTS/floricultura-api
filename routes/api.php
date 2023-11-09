@@ -8,6 +8,7 @@ use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\FuncaoController;
 use App\Http\Controllers\PermissaoController;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\VendaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -42,4 +43,5 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
+Route::get('relatorio-vendas', [RelatorioController::class, 'relatorioVendas']);
 Route::post('/login', [AuthController::class, 'login']);
