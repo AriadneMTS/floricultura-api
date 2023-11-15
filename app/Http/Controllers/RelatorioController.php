@@ -27,12 +27,12 @@ class RelatorioController extends Controller
         $inicioPeriodo = Carbon::createFromFormat('d/m/Y', $inicioConvertido)->startOfDay();
         $fimPeriodo = Carbon::createFromFormat('d/m/Y', $fimConvertido)->endOfDay();
 
-        $vendas = Venda::with('produtos', 'cliente:id,nome,cpf', 'colaborador:id,cpf')->whereBetween('created_at', [$inicioPeriodo, $fimPeriodo])->get();
+        $vendas = Venda::with('produtos', 'cliente:id,nome',)->whereBetween('created_at', [$inicioPeriodo, $fimPeriodo])->get();
 
         $data = [
             'title' => 'Relatório de Vendas',
             'period' => "$inicioConvertido até $fimConvertido",
-            'date' => Carbon::now('America/Sao_Paulo')->format('d/m/Y H:i:s'),
+            'date' => Carbon::now('America/Sao_Paulo')->format('d/m/Y H:i'),
             'vendas' => $vendas
         ];
 
