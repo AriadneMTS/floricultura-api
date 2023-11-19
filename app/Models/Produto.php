@@ -15,4 +15,8 @@ class Produto extends Model
     public function fornecedor(){
         return $this->belongsTo(Fornecedor::class);
     }
+
+    public function vendas() {
+        return $this->belongsToMany(Venda::class, 'venda_produtos')->withPivot('quantidade');
+    }
 }

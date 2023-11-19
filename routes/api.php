@@ -44,4 +44,5 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('relatorio-vendas', [RelatorioController::class, 'relatorioVendas']);
+Route::get('relatorio-produtos-mais-vendidos', [RelatorioController::class, 'relatorioProdutosMaisVendidos']);
 Route::post('/login', [AuthController::class, 'login']);
