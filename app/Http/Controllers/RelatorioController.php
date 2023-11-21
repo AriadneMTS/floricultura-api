@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\Produto;
 use App\Models\Venda;
 use DateTime;
@@ -88,5 +89,58 @@ class RelatorioController extends Controller
         $pdf = PDF::loadView('relatorio-produtos-mais-vendidos', $data);
 
         return $pdf->download('relatorio-produtos-mais-vendidos.pdf');
+    }
+
+    public function relatorioClientesQueMaisCompraram(Request $request)
+    {
+        $inicio = $request->query("inicio");
+        $fim = $request->query("fim");
+
+        $inicioConvertido = date('d/m/Y', strtotime($inicio));
+        $fimConvertido = date('d/m/Y', strtotime($fim));
+
+        $inicioPeriodo = Carbon::createFromFormat('d/m/Y', $inicioConvertido)->startOfDay();
+        $fimPeriodo = Carbon::createFromFormat('d/m/Y', $fimConvertido)->endOfDay();
+
+        $clientes = Cliente::get();
+
+        $clienteCompra = [];
+
+        foreach ($clientes as $cliente) {
+            $compras = $cliente->compras()->whereBetween('vendas.created_at', [$inicioPeriodo, $fimPeriodo])->get();
+
+            $valorTotal = 0;
+            $quantidadeProdutos = 0;
+            foreach ($compras as $compra) {
+                $valorTotal += $compra->valor_total;
+                $produtos = $compra->produtos()->get();
+                foreach ($produtos as $produto) {
+                    $quantidadeProdutos += $produto->pivot->quantidade;
+                }
+            }
+
+            array_push($clienteCompra, [
+                "id" => $cliente->id,
+                "nome" => $cliente->nome,
+                "quantidadeCompras" => sizeof($compras),
+                "quantidadeProdutos" => $quantidadeProdutos,
+                "valorTotal" => $valorTotal,
+            ]);
+        }
+
+        usort($clienteCompra, function ($a, $b) {
+            return $b['valorTotal'] > $a['valorTotal'] ? 1 : -1;
+        });
+
+        $data = [
+            'title' => 'Relatório de Clientes que mais compraram',
+            'period' => "$inicioConvertido até $fimConvertido",
+            'date' => Carbon::now('America/Sao_Paulo')->format('d/m/Y H:i'),
+            'clientes' => $clienteCompra
+        ];
+
+        $pdf = PDF::loadView('relatorio-clientes-que-mais-compraram', $data);
+
+        return $pdf->download('relatorio-clientes-que-mais-compraram.pdf');
     }
 }
