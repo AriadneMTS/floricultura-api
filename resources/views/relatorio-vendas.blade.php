@@ -25,6 +25,16 @@
             <strong>Quantidade de vendas:</strong>
             <span>{{ sizeof($vendas) }}</span>
         </p>
+
+        <p>
+            <strong>Valor total:</strong>
+            <span>{{ $valor_total }}</span>
+        </p>
+
+        <p>
+            <strong>Ticket médio:</strong>
+            <span>{{ $ticket_medio }}</span>
+        </p>
         <table class="table table-bordered">
             <tr>
                 <th>Cliente</th>

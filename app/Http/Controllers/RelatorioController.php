@@ -31,11 +31,19 @@ class RelatorioController extends Controller
 
         $vendas = Venda::with('produtos', 'cliente:id,nome',)->whereBetween('created_at', [$inicioPeriodo, $fimPeriodo])->get();
 
+        $valorTotal = 0;
+
+        foreach ($vendas as $venda) {
+            $valorTotal += $venda->valor_total;
+        }
+
         $data = [
             'title' => 'Relatório de Vendas',
             'period' => "$inicioConvertido até $fimConvertido",
             'date' => Carbon::now('America/Sao_Paulo')->format('d/m/Y H:i'),
-            'vendas' => $vendas
+            'vendas' => $vendas,
+            'valor_total' => formatNumberToBRL($valorTotal),
+            'ticket_medio' => sizeof($vendas) > 0 ? formatNumberToBRL($valorTotal / sizeof($vendas)) : 0,
         ];
 
         $pdf = PDF::loadView('relatorio-vendas', $data);
