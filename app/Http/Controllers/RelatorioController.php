@@ -71,7 +71,9 @@ class RelatorioController extends Controller
             array_push($produtoQuantidade, [
                 "id" => $produto->id,
                 "nome" => $produto->nome,
-                "quantidade" => $quantidade
+                "valorUnidade" => $produto->formattedValor,
+                "quantidade" => $quantidade,
+                "valorTotalEstimado" => $quantidade * $produto->valor,
             ]);
         }
 

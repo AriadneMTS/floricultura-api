@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Relatório de Vendas</title>
+    <title>Relatório de Produtos mais vendidos</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
@@ -28,11 +28,15 @@
         <table class="table table-bordered">
             <tr>
                 <th>Nome</th>
+                <th>Valor Un.</th>
+                <th>Total</th>
                 <th>Quantidade</th>
             </tr>
             @foreach($produtos as $produto)
             <tr>
                 <td>{{ $produto["nome"] }}</td>
+                <td>{{ $produto["valorUnidade"] }}</td>
+                <td>{{ formatNumberToBRL($produto["valorTotalEstimado"]) }}</td>
                 <td>{{ $produto["quantidade"] }}</td>
             </tr>
             @endforeach
