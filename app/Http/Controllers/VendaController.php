@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\PaymentMethods;
+use App\Models\Produto;
 use App\Models\Venda;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
@@ -37,15 +38,30 @@ class VendaController extends Controller
 
         $dados = $request->except('_token');
 
+        foreach ($dados["produtos"] as $produto) {
+            $p = Produto::find($produto["id"]);
+            if ($p->estoque < $produto["quantidade"]) {
+                return Response()->json([
+                    "message" => "Não é possível vender {$produto["quantidade"]} unidade(s) de $p->nome pois existe(m) apenas $p->estoque unidade(s) no estoque."
+                ], 403);
+            }
+        }
+
         $dados["colaborador_id"] = auth()->user()->id;
 
-        $venda = Venda::create($dados);
         $produtos = array_reduce($dados["produtos"], function ($carry, $produto) {
             $carry[$produto["id"]] = ["quantidade" => $produto["quantidade"]];
             return $carry;
         }, []);
 
+        $venda = Venda::create($dados);
+
         $venda->produtos()->sync($produtos);
+
+        foreach ($dados["produtos"] as $produto) {
+            $p = Produto::find($produto["id"]);
+            $p->update(["estoque" => $p->estoque - $produto["quantidade"]]);
+        }
 
         return Response()->json($venda, 201);
     }
@@ -79,13 +95,65 @@ class VendaController extends Controller
 
         $venda = Venda::find($id);
 
+        $produtosDaVenda = $venda->produtos()->get();
+
+        $produtosReq = $dados["produtos"];
+
+        // verifica estoque dos produtos que ja estao na venda
+        foreach ($produtosDaVenda as $p) {
+            $produto_index = array_search($p->id, array_column($produtosReq, "id"));
+
+            if (!$produto_index) {
+                continue;
+            }
+
+            $produtoReq = $produtosReq[$produto_index];
+
+            $quantidadeEmEstoque = $p->estoque;
+            $quantidadeNaVenda = $p->pivot->quantidade;
+            $quantidadesSomadas = $quantidadeEmEstoque + $quantidadeNaVenda;
+
+            if ($produtoReq["quantidade"] > $quantidadesSomadas) {
+                return Response()->json([
+                    "message" => "Não é possível vender {$produtoReq["quantidade"]} unidade(s) de $p->nome pois existe(m) apenas {$quantidadesSomadas} unidade(s) no estoque."
+                ], 403);
+            }
+        }
+
+        // verifica estoque dos novos produtos
+        foreach ($dados["produtos"] as $produto) {
+            $p = Produto::find($produto["id"]);
+            $produto_index = array_search($p->id, array_column($produtosDaVenda->toArray(), "id"));
+
+            if ($produto_index || $produto_index === 0) {
+                continue;
+            }
+
+            if ($p->estoque < $produto["quantidade"]) {
+                return Response()->json([
+                    "message" => "Não é possível vender {$produto["quantidade"]} unidade(s) de $p->nome pois existe(m) apenas $p->estoque unidade(s) no estoque."
+                ], 403);
+            }
+        }
+
         $venda->update($dados);
+
         $produtos = array_reduce($dados["produtos"], function ($carry, $produto) {
             $carry[$produto["id"]] = ["quantidade" => $produto["quantidade"]];
             return $carry;
         }, []);
 
         $venda->produtos()->sync($produtos);
+
+        foreach ($produtosDaVenda as $produto) {
+            $p = Produto::find($produto->id);
+            $p->update(["estoque" => $p->estoque + $produto->pivot->quantidade]);
+        }
+
+        foreach ($dados["produtos"] as $produto) {
+            $p = Produto::find($produto["id"]);
+            $p->update(["estoque" => $p->estoque - $produto["quantidade"]]);
+        }
 
         return Response()->json([], 204);
     }
@@ -98,7 +166,16 @@ class VendaController extends Controller
             ], 403);
         }
 
-        Venda::destroy($id);
+        $venda = Venda::find($id);
+
+        $produtosDaVenda = $venda->produtos()->get();
+
+        foreach ($produtosDaVenda as $produto) {
+            $p = Produto::find($produto->id);
+            $p->update(["estoque" => $p->estoque + $produto->pivot->quantidade]);
+        }
+
+        $venda->delete();
 
         return Response()->json([], 204);
     }
