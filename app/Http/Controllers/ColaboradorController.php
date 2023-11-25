@@ -80,6 +80,23 @@ class ColaboradorController extends Controller
         }
 
         $dados = $request->except('_token');
+
+        $cpfExists = Colaborador::where('cpf', $dados["cpf"])->first();
+
+        if ($cpfExists && $cpfExists->id !== intval($id)) {
+            return Response()->json([
+                "message" => "Já existe colaborador cadastrado com esse CPF."
+            ], 403);
+        }
+
+        $emailExists = Colaborador::where('email', $dados["email"])->first();
+
+        if ($emailExists && $emailExists->id !== intval($id)) {
+            return Response()->json([
+                "message" => "Já existe colaborador cadastrado com esse email."
+            ], 403);
+        }
+
         if (array_key_exists("password", $dados)) {
             $dados["password"] = bcrypt($request->password);
         }

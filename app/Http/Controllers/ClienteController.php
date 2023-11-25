@@ -71,6 +71,14 @@ class ClienteController extends Controller
 
         $dados = $request->except('_token');
 
+        $cpfExists = Cliente::where('cpf', $dados["cpf"])->first();
+
+        if ($cpfExists && $cpfExists->id !== intval($id)) {
+            return Response()->json([
+                "message" => "Já existe cliente cadastrado com esse CPF."
+            ], 403);
+        }
+
         $cliente = Cliente::find($id);
 
         $cliente->update($dados);
