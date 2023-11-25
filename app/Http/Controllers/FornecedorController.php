@@ -31,6 +31,14 @@ class FornecedorController extends Controller
 
         $dados = $request->except('_token');
 
+        $cnpjExists = Fornecedor::where('cnpj', $dados["cnpj"])->first();
+
+        if ($cnpjExists) {
+            return Response()->json([
+                "message" => "Já existe fornecedor cadastrado com esse CNPJ."
+            ], 403);
+        }
+
         $fornecedor = Fornecedor::create($dados);
 
         return Response()->json($fornecedor, 201);

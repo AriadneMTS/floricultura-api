@@ -31,6 +31,14 @@ class ClienteController extends Controller
 
         $dados = $request->except('_token');
 
+        $cpfExists = Cliente::where('cpf', $dados["cpf"])->first();
+
+        if ($cpfExists) {
+            return Response()->json([
+                "message" => "Já existe cliente cadastrado com esse CPF."
+            ], 403);
+        }
+
         $cliente = Cliente::create($dados);
 
         return Response()->json($cliente, 201);
@@ -78,7 +86,15 @@ class ClienteController extends Controller
             ], 403);
         }
 
-        Cliente::destroy($id);
+        $cliente = Cliente::find($id);
+
+        if (sizeof($cliente->compras()->get()) > 0) {
+            return Response()->json([
+                "message" => "Não foi possível deletar o pois há vendas vinculadas a esse cliente."
+            ], 403);
+        }
+
+        $cliente->delete();
 
         return Response()->json([], 204);
     }

@@ -30,6 +30,23 @@ class ColaboradorController extends Controller
         }
 
         $dados = $request->except('_token');
+
+        $cpfExists = Colaborador::where('cpf', $dados["cpf"])->first();
+
+        if ($cpfExists) {
+            return Response()->json([
+                "message" => "Já existe colaborador cadastrado com esse CPF."
+            ], 403);
+        }
+
+        $emailExists = Colaborador::where('email', $dados["email"])->first();
+
+        if ($emailExists) {
+            return Response()->json([
+                "message" => "Já existe colaborador cadastrado com esse email."
+            ], 403);
+        }
+
         $dados["password"] = bcrypt($request->password);
 
         $colaborador = Colaborador::create($dados);
@@ -88,7 +105,15 @@ class ColaboradorController extends Controller
             ], 403);
         }
 
-        Colaborador::destroy($id);
+        $colaborador = Colaborador::find($id);
+
+        if (sizeof($colaborador->vendas()->get()) > 0) {
+            return Response()->json([
+                "message" => "Não foi possível deletar o pois há vendas vinculadas a esse colaborador."
+            ], 403);
+        }
+
+        $colaborador->delete();
 
         return Response()->json([], 204);
     }

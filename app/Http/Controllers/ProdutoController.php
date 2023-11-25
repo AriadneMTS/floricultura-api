@@ -114,6 +114,12 @@ class ProdutoController extends Controller
 
         $produto = Produto::find($id);
 
+        if (sizeof($produto->vendas()->get()) > 0) {
+            return Response()->json([
+                "message" => "Não foi possível deletar o pois há vendas vinculadas a esse produto."
+            ], 403);
+        }
+
         if($produto->imagem_url !== "produto-default.png") {
             $image_path = public_path('images/produtos').'/'.$produto->imagem_url;
             unlink($image_path);
