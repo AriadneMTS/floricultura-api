@@ -252,5 +252,26 @@ class PermissaoSeeder extends Seeder
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ],
         ]);
+
+        DB::table('permissaos')->insert([
+            [
+                'descricao' => 'Relatório de Vendas',
+                'nome' => 'relatorio-vendas',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+            [
+                'descricao' => 'Relatório de Produtos mais vendidos',
+                'nome' => 'relatorio-produtos-mais-vendidos',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+            [
+                'descricao' => 'Relatório de Clientes que mais compraram',
+                'nome' => 'relatorio-clientes-que-mais-compraram',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ],
+        ]);
     }
 }

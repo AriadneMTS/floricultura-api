@@ -14,7 +14,7 @@ class FuncaoPermissaoSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 1; $i <= 35; $i++) {
+        for ($i = 1; $i <= 38; $i++) {
             DB::table('funcao_permissaos')->insert([
                 'funcao_id' => 1,
                 'permissao_id' => $i,
